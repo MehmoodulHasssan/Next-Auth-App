@@ -3,11 +3,15 @@ import { useState, useEffect } from 'react';
 import useInput from '@/hooks/useInput';
 import Input from './Input';
 import Link from 'next/link';
+import User from '@/models/User';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
 const LoginForm: React.FC<{
   isLoading: boolean;
   onLogin: (enteredValue: { email: string; password: string }) => void;
 }> = ({ onLogin, isLoading }) => {
+  const router = useRouter();
   const {
     enteredValue,
     handleChangeEmail,
@@ -41,6 +45,23 @@ const LoginForm: React.FC<{
     //   console.log(key, value);
     // }
   };
+  const handleForgotPassword = async () => {
+    // const user = await User.findOne({ email: enteredValue.email }).exec();
+    // if (!user) {
+    //   console.log('email does not exist');
+    //   return;
+    // }
+
+    const response = await axios.post('api/send-email', {
+      email: enteredValue.email,
+      emailType: 'RESET',
+      userId: 'kjfsjfsk3424234',
+    });
+    if (response.status === 200 || 201) {
+      console.log(response.data);
+      router.push('/emailSent');
+    }
+  };
 
   return (
     <form
@@ -53,7 +74,9 @@ const LoginForm: React.FC<{
       <Input inputType="email" onChange={handleChangeEmail} />
       <Input inputType="password" onChange={handleChangePassword} />
       <div className="text-green-400 font-semibold">
-        <Link href="/login">forgot password?</Link>
+        <button type="button" onClick={handleForgotPassword}>
+          forgot password?
+        </button>
       </div>
       <div className="w-10/12 py-2">
         <button

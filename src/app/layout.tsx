@@ -1,14 +1,20 @@
+'use client';
 import React, { ReactNode } from 'react';
 import '@/assets/styles/globals.css';
-import { connectDb } from '../../configure/connectDb';
+import NavigationBar from '@/components/NavigationBar';
+import { Provider } from 'react-redux';
+import { store } from '@/store/isLogin';
 
 const RootLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
-    <html lang="en-us">
-      <body className="w-screen h-screen bg-green-500">
-        <div>{children}</div>
-      </body>
-    </html>
+    <Provider store={store}>
+      <html lang="en-us">
+        <body className="w-screen h-screen bg-green-500">
+          <NavigationBar />
+          <div>{children}</div>
+        </body>
+      </html>
+    </Provider>
   );
 };
 

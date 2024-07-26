@@ -3,8 +3,11 @@ import React, { useState } from 'react';
 import LoginForm from '../../components/LoginForm';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { loginActions } from '@/store/isLogin';
+import { useDispatch } from 'react-redux';
 
 const LoginPage = () => {
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const onLogin = async (enteredValue: { email: string; password: string }) => {
@@ -13,7 +16,8 @@ const LoginPage = () => {
       const res = await axios.post('/api/login', enteredValue);
       if (res.status === 200) {
         console.log('ligin success');
-        router.push(`/profile/mehmood`);
+        dispatch(loginActions.login());
+        router.push(`/`);
       }
     } catch (error: any) {
       console.log(error.response.data);
@@ -21,6 +25,7 @@ const LoginPage = () => {
       setLoading(false);
     }
   };
+
   return <LoginForm onLogin={onLogin} isLoading={loading} />;
 };
 

@@ -18,7 +18,13 @@ const Input: React.FC<{
           {inputType.charAt(0).toUpperCase() + inputType.slice(1)}
         </label>
         <input
-          type={inputType == 'username' ? 'text' : inputType}
+          type={
+            inputType == 'username'
+              ? 'text'
+              : inputType === 'Confirm Password'
+              ? 'password'
+              : inputType
+          }
           name={inputType}
           id={inputType}
           placeholder={inputType}
